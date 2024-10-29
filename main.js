@@ -7,7 +7,9 @@ let settings = {
 }
 
 let countDownClock = new CountDownClock(settings.workMinutes);
-countDownClock.setTimeoutCallback(showNotification);
+countDownClock.setTimeoutCallback(() => {
+    showNotification("Time's up!");
+});
 
 const showBoardDom = document.querySelector("#showBoard");
 countDownClock.setShowBoardDom((timeText) => {
@@ -19,13 +21,8 @@ const workBtn = document.querySelector("#workBtn");
 const breakBtn = document.querySelector("#breakBtn");
 const startBtn = document.querySelector("#startBtn");
 const stopBtn = document.querySelector("#stopBtn");
-const testBtn = document.querySelector("#testBtn");
 const workMinutesInput = document.querySelector("#workMinutes");
 const breakMinutesInput = document.querySelector("#breakMinutes");
-
-testBtn.addEventListener("click", function() {
-    showNotification("absdfd");
-});
 
 workMinutesInput.value = settings.workMinutes;
 breakMinutesInput.value = settings.breakMinutes;
