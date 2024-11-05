@@ -1,9 +1,10 @@
 import CountDownClock from './CountDownClock.js';
 import { showNotification } from './Notification.js';
+import db from './db.js';
 
 let settings = {
-    workMinutes: 25,
-    breakMinutes: 5,
+    workMinutes: db.get('workMinutes') || 25,
+    breakMinutes: db.get('breakMinutes') || 5,
 }
 
 let countDownClock = new CountDownClock(settings.workMinutes);
@@ -44,18 +45,18 @@ stopBtn.addEventListener("click", function() {
 });
 
 workMinutesInput.addEventListener("input", function() {
-    console.log(workMinutesInput.value);
     let value = parseInt(workMinutesInput.value);
     if (value) {
         settings.workMinutes = value;
+        db.set('workMinutes', value);
     }
 });
 
 breakMinutesInput.addEventListener("input", function() {
-    console.log(breakMinutesInput.value);
     let value = parseInt(breakMinutesInput.value);
     if (value) {
         settings.breakMinutes = value;
+        db.set('breakMinutes', value);
     }
 });
 
