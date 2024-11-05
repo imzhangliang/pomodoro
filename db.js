@@ -2,12 +2,19 @@
 
 class DB {
     get(key) {
-        return localStorage.getItem(key);
+        if (localStorage.getItem(key) && localStorage.getItem(key).startsWith('number:')) {
+            return parseInt(localStorage.getItem(key).substring(7)) || 0;
+        }
     }
 
     set(key, value) {
-        localStorage.setItem(key, value);
+        if (typeof value === typeof(0)) {
+            localStorage.setItem(key, `number:${value || 0}`);
+        } else {
+            localStorage.setItem(key, value);
+        }
     }
+
 } 
 
 

@@ -10,8 +10,14 @@ class CountDownClock {
     #intervalHandle = null;
     #showBoardCallback = null;
     #timeoutCallback = null;
+    #setMinutes = null;
+    #setSeconds = null;
     constructor(minutes, seconds = 0) {
-        this.#clock = new Clock(minutes, seconds);
+        this.reset(minutes, seconds);
+    }
+
+    getSetMinutes() {
+        return this.#setMinutes || 0;
     }
 
     setShowBoardDom(showBoardCb) {
@@ -34,8 +40,12 @@ class CountDownClock {
     }
 
     reset(minutes, seconds = 0) {
+        minutes = parseInt(minutes)
+        seconds = parseInt(seconds)
         this.stop();
         this.#clock = new Clock(minutes, seconds);
+        this.#setMinutes = minutes;
+        this.#setSeconds = seconds;
         this.refreshShowBoard();
     }
 
