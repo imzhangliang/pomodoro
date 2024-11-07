@@ -53,6 +53,11 @@ class CountDownClock {
         if (this.#startStatus) {
             return ;
         }
+
+        if (this.#clock.getSeconds() === 0) {
+            return ;
+        }
+
         this.#startStatus = true;
 
         const clockStartTime = this.#clock.getSeconds();

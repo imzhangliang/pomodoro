@@ -4,7 +4,7 @@ import { NumberBoard } from './statis.js';
 import db from './db.js';
 
 
-let isWorkingClock = false;
+let isWorkingClock = true;
 let settings = {
     workMinutes: db.get('workMinutes') || 25,
     breakMinutes: db.get('breakMinutes') || 5,
@@ -12,16 +12,20 @@ let settings = {
 
 let todayWorkingMinutesBoard = new NumberBoard(document.querySelector("#todayWorkingMinutes"), 0);
 
-let yourDate = new Date()
-let dateSuffix = yourDate.toISOString().split('T')[0];
-let todayWorkingMinutesDbKey = 'twm' + dateSuffix;
+
+function getTodayWorkingMinutesDbKey() {
+    let tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
+    let localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
+    let dateSuffix = localISOTime.split('T')[0];
+    let todayWorkingMinutesDbKey = 'twm' + dateSuffix;
+
+    return todayWorkingMinutesDbKey;
+}
 
 todayWorkingMinutesBoard.setDBCallback({
-    getCb: () => parseInt(db.get(todayWorkingMinutesDbKey)),
-    setCb: (val) => db.set(todayWorkingMinutesDbKey, val),
+    getCb: () => parseInt(db.get(getTodayWorkingMinutesDbKey())),
+    setCb: (val) => db.set(getTodayWorkingMinutesDbKey(), val),
 });
-
-//todayWorkingMinutesBoard.setNumber(15);
 
 let countDownClock = new CountDownClock(settings.workMinutes);
 countDownClock.setTimeoutCallback(() => {
